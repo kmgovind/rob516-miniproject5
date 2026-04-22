@@ -1,9 +1,9 @@
-# Resilient Multi-Agent Rendezvous for Heterogeneous Marine–Aerial Teams
+# Resilient Rendezvous for Heterogeneous Marine-Aerial Teams Under Communication Uncertainty
 
 Short description
 -----------------
 
-This repository contains the simulation code and plotting utilities used for the project "Resilient Multi-Agent Rendezvous for Heterogeneous Marine–Aerial Teams under Communication Uncertainty." The code implements a simple, reproducible simulation pipeline (written with JAX) for evaluating decentralized rendezvous controllers where a surface vehicle (USV) provides a leader trajectory and a team of aerial agents (UAVs) attempt to rendezvous despite intermittent communications.
+This repository contains the simulation code and plotting utilities used for the project "Resilient Rendezvous for Heterogeneous Marine-Aerial Teams Under Communication Uncertainty." The code implements a simple, reproducible simulation pipeline (written with JAX) for evaluating decentralized rendezvous controllers where a surface vehicle (USV) provides a leader trajectory and a team of aerial agents (UAVs) attempt to rendezvous despite intermittent communications.
 
 The codebase includes a baseline consensus-only strategy and a proposed feedforward-enhanced strategy; utilities are provided to compare them, compute simple tracking metrics, and produce publication-quality figures.
 
