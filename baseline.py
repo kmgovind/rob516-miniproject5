@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 if __name__ == "__main__":
-    history, leader_history = run_simulation(feedforward=True)
+    history, leader_history = run_simulation(feedforward=False)
     history = jax.device_get(history)
     leader_history = jax.device_get(leader_history)
 
@@ -16,7 +16,7 @@ if __name__ == "__main__":
         plt.plot(history[:, i, 0], history[:, i, 1], alpha=0.4)
         plt.scatter(history[-1, i, 0], history[-1, i, 1], s=20, edgecolors='black')
 
-    plt.title(f"Rendezvous with Feedforward (Eliminating Tracking Lag)")
+    plt.title("Baseline Rendezvous (Consensus Only, No Feedforward)")
     plt.legend()
     plt.grid(True, linestyle=':')
     plt.axis('equal')
