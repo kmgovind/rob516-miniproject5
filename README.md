@@ -152,7 +152,7 @@ If you use this code in published work, please cite the authors and repository. 
 
 ```bibtex
 @misc{govindarajan2026resilient,
-	title = {Resilient Multi-Agent Rendezvous for Heterogeneous Marine--Aerial Teams under Communication Uncertainty},
+	title = {Resilient Rendezvous for Heterogeneous Marine-Aerial Teams Under Communication Uncertainty},
 	author = {Kavin M. Govindarajan and Sanyam Mehta},
 	year = {2026},
 	howpublished = {\\url{https://github.com/kmgovind/rob516-miniproject5}},
