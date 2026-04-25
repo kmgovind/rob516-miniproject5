@@ -12,7 +12,7 @@ import jax.numpy as jnp
 import numpy as np
 import matplotlib.pyplot as plt
 from simulator import run_simulation
-from plotter import plot_results, comparison_plot
+from plotter import plot_results, comparison_plot, video_plot
 
 
 def compute_metrics(history, leader_history, dt, threshold=0.5):
@@ -80,10 +80,12 @@ def compare_and_plot(seed=42, dt=0.05, num_steps=800, plot=True, **sim_kwargs):
     # Run both strategies with the same seed (consistent randomness)
     hist_ff, lead_ff = run_simulation(seed=seed, dt=dt, num_steps=num_steps, feedforward=True, **sim_kwargs)
     plot_results(hist_ff, lead_ff, save_path="results/feedforward_rendezvous.pdf")
+    video_plot(hist_ff, lead_ff, save_path="results/feedforward_trajectory.gif", fps=20)
     
 
     hist_bl, lead_bl = run_simulation(seed=seed, dt=dt, num_steps=num_steps, feedforward=False, **sim_kwargs)
     plot_results(hist_bl, lead_bl, save_path="results/baseline_rendezvous.pdf")
+    video_plot(hist_bl, lead_bl, save_path="results/baseline_trajectory.gif", fps=20)
 
     metrics_ff, mean_err_ff, _ = compute_metrics(hist_ff, lead_ff, dt)
     metrics_bl, mean_err_bl, _ = compute_metrics(hist_bl, lead_bl, dt)

@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 import numpy as np
 
 # IEEE Publication Settings
@@ -55,6 +56,56 @@ def plot_results(history, leader_history, save_path=None):
         plt.savefig(save_path, format='pdf', dpi=300)
         print(f"Saved publication-quality plot to {save_path}")
     plt.show()
+
+
+def video_plot(history, leader_history, save_path='trajectory_video.gif', fps=20):
+    # Convert to NumPy
+    history_np = np.array(history)
+    leader_history_np = np.array(leader_history)
+    
+    # Ensure both arrays have the same length to avoid IndexErrors
+    num_frames = min(history_np.shape[0], leader_history_np.shape[0])
+    
+    fig, ax = plt.subplots(figsize=(5, 5))
+    num_agents = history_np.shape[1]
+    colors = plt.cm.viridis(np.linspace(0, 0.8, num_agents))
+    
+    ax.plot(leader_history_np[:, 0], leader_history_np[:, 1], 
+            color='black', linestyle='--', alpha=0.3, label="USV Path")
+    
+    leader_dot, = ax.plot([], [], color='tab:red', marker='X', markersize=10, ls='', zorder=5)
+    agent_dots, = ax.plot([], [], color='blue', marker='o', ls='', markersize=4, zorder=4)
+    agent_lines = [ax.plot([], [], color=colors[i], alpha=0.4, linewidth=0.8)[0] for i in range(num_agents)]
+
+    def init():
+        all_x = np.concatenate([history_np[:,:,0].flatten(), leader_history_np[:,0]])
+        all_y = np.concatenate([history_np[:,:,1].flatten(), leader_history_np[:,1]])
+        ax.set_xlim(np.min(all_x) - 1, np.max(all_x) + 1)
+        ax.set_ylim(np.min(all_y) - 1, np.max(all_y) + 1)
+        ax.set_aspect('equal')
+        return [leader_dot, agent_dots] + agent_lines
+
+    def update(frame):
+        # Double check bounds inside the loop just in case
+        if frame >= num_frames:
+            return [leader_dot, agent_dots] + agent_lines
+            
+        leader_dot.set_data([leader_history_np[frame, 0]], [leader_history_np[frame, 1]])
+        agent_dots.set_data(history_np[frame, :, 0], history_np[frame, :, 1])
+        
+        for i in range(num_agents):
+            agent_lines[i].set_data(history_np[:frame+1, i, 0], history_np[:frame+1, i, 1])
+        return [leader_dot, agent_dots] + agent_lines
+
+    # Explicitly set frames to num_frames (which is 800, indices 0-799)
+    anim = FuncAnimation(fig, update, frames=num_frames, init_func=init, 
+                         blit=True, interval=1000/fps)
+    
+    print(f"Starting render of {num_frames} frames...")
+    anim.save(save_path, writer='pillow', fps=fps)
+    print(f"Saved trajectory video to {save_path}")
+    plt.close(fig)
+
 
 
 def comparison_plot(T, mean_err_ff, mean_err_bl, dt, save_path='error_comparison.pdf'):
